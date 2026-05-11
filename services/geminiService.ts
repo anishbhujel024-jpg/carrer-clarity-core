@@ -158,16 +158,41 @@ export async function analyzeResume(
   // Fresh instance inside the function to capture potential key updates
   const ai = new GoogleGenAI({ apiKey: assertGeminiApiKey() });
   
-  // Upgrade to Pro for complex resume reasoning
   const model = getAnalysisModel();
+  let groundedMarketContext = "Grounded market context unavailable. Use current best knowledge and avoid inventing source URLs.";
+
+  try {
+    const groundingResponse = await ai.models.generateContent({
+      model,
+      contents: {
+        parts: [
+          {
+            text: `Research the current 2025 market for "${role}" careers. Focus on salary ranges, hiring demand, skill gaps, and high-quality learning resources.`
+          }
+        ]
+      },
+      config: {
+        tools: [{ googleSearch: {} }]
+      },
+    });
+
+    if (groundingResponse.text) {
+      groundedMarketContext = groundingResponse.text;
+    }
+  } catch (groundingError) {
+    console.warn("Grounding preflight failed; continuing with structured analysis.", groundingError);
+  }
   
   const prompt = `
     Analyze this professional dossier for the role: "${role}".
     1. Assess skill alignment (matchScore) and professional maturity (readinessScore).
-    2. Use Google Search to verify 2025 market salary for this specific role.
+    2. Use the grounded market context below to verify 2025 market salary for this specific role.
     3. Generate a tactical 30-day action plan with live learning resources.
     4. Suggest 3 alternative pivot paths.
     Return the response strictly as JSON.
+
+    Grounded market context:
+    ${groundedMarketContext}
   `;
 
   try {
@@ -181,8 +206,7 @@ export async function analyzeResume(
       },
       config: {
         responseMimeType: "application/json",
-        responseSchema: analysisSchema,
-        tools: [{ googleSearch: {} }] 
+        responseSchema: analysisSchema
       },
     });
 
