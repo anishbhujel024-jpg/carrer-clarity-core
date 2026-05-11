@@ -28,10 +28,10 @@ export const assertGeminiApiKey = () => {
 };
 
 export const getAnalysisModel = () =>
-  import.meta.env.VITE_GEMINI_ANALYSIS_MODEL?.trim() || 'gemini-3-pro-preview';
+  import.meta.env.VITE_GEMINI_ANALYSIS_MODEL?.trim() || 'gemini-2.5-flash-lite';
 
 export const getChatModel = () =>
-  import.meta.env.VITE_GEMINI_CHAT_MODEL?.trim() || 'gemini-3-flash-preview';
+  import.meta.env.VITE_GEMINI_CHAT_MODEL?.trim() || 'gemini-2.5-flash-lite';
 
 export const hasAiStudioKeySelector = () =>
   typeof window !== 'undefined' && typeof window.aistudio?.openSelectKey === 'function';

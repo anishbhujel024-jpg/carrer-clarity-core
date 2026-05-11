@@ -9,7 +9,7 @@
 
 This engine utilizes a multi-modal AI architecture designed for maximum accuracy and real-time relevance:
 
-- **Primary Reasoning Engine:** `gemini-3-flash-preview` handles deep profile auditing and synaptic roadmap synthesis.
+- **Primary Reasoning Engine:** `gemini-2.5-flash-lite` handles deep profile auditing and synaptic roadmap synthesis on the Gemini API free tier.
 - **Verification Protocol:** **Google Search Grounding** is active across all modules. The AI doesn't just "guess"—it queries the live internet to verify 2025 salary benchmarks, hiring trends, and technical documentation.
 - **Structured Synthesis:** Fully driven by `@google/genai` using strict JSON schemas to ensure the UI remains a direct representation of neural outputs.
 - **Curation Logic:** A Zero-Tolerance link verification system ensures every curated video resource (YouTube, MIT OCW, Coursera) is live and precisely matches the user's identified skill gaps.
